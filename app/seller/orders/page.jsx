@@ -1,6 +1,7 @@
-"use client";
+// Importing dependencies
+"use client"; //  Ensures this component runs on the client side
 import React, { useEffect, useState } from "react";
-import { assets, orderDummyData } from "@/assets/assets";
+import { assets } from "@/assets/assets";
 import Image from "next/image";
 import { useAppContext } from "@/context/AppContext";
 import Footer from "@/components/seller/Footer";
@@ -9,11 +10,11 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const Orders = () => {
-  const { currency, getToken, user } = useAppContext();
+  const { currency, getToken, user } = useAppContext(); // Global state
+  const [orders, setOrders] = useState([]); // Local state: Stores fetched seller orders.
+  const [loading, setLoading] = useState(true); // Local state
 
-  const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
-
+  // Fetching Seller Orders: Fetches seller's orders from /api/order/seller-orders.
   const fetchSellerOrders = async () => {
     try {
       const token = await getToken();
@@ -21,6 +22,7 @@ const Orders = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (data.success) {
+        // If data is successfully retrieved, it updates orders and sets loading to false.
         setOrders(data.orders);
         setLoading(false);
       } else {
@@ -31,24 +33,29 @@ const Orders = () => {
     }
   };
 
+  // Fetch Orders on Component Load
   useEffect(() => {
     if (user) {
       fetchSellerOrders();
     }
   }, [user]);
 
+  // Displaying Orders
   return (
     <div className="flex-1 h-screen overflow-scroll flex flex-col justify-between text-sm">
       {loading ? (
         <Loading />
       ) : (
-        <div className="md:p-10 p-4 space-y-5">
-          <h2 className="text-lg font-medium">Orders</h2>
-          <div className="max-w-4xl rounded-md">
+        <div className="md:p-6 p-4 space-y-5">
+          <h2 className="text-2xl bg-sky-800 border-2 text-white border-gray-700 max-w-40 mx-auto rounded text-center font-medium">
+            Orders
+          </h2>
+
+          <div className="max-w-5xl ml-12 rounded-md">
             {orders.map((order, index) => (
               <div
                 key={index}
-                className="flex flex-col md:flex-row gap-5 justify-between p-5 border-t border-gray-300"
+                className="flex flex-col md:flex-row gap-5 justify-between p-5 border border-gray-300"
               >
                 <div className="flex-1 flex gap-5 max-w-80">
                   <Image
@@ -67,6 +74,7 @@ const Orders = () => {
                     <span>Items : {order.items.length}</span>
                   </p>
                 </div>
+
                 <div>
                   <p>
                     <span className="font-medium">
@@ -80,10 +88,12 @@ const Orders = () => {
                     <span>{order.address.phoneNumber}</span>
                   </p>
                 </div>
+
                 <p className="font-medium my-auto">
                   {currency}
-                  {order.amout}
+                  {order.amout.toFixed(2)}
                 </p>
+
                 <div>
                   <p className="flex flex-col">
                     <span>Method : COD</span>

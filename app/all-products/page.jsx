@@ -15,17 +15,17 @@ const AllProducts = () => {
       <Navbar /> {/* Renders the navigation bar. */}
       <div className="flex flex-col items-start px-6 md:px-16 lg:px-32">
         {/* 4. Page Header (All Products Title) */}
-        <div className="flex flex-col items-end pt-12">
-          <p className="text-2xl font-medium">All products</p>
-          <div className="w-16 h-0.5 bg-orange-600 rounded-full"></div>
+        <div className="flex flex-col border-2 rounded items-center py-2 px-4 bg-yellow-300 mx-auto mt-9">
+          <p className="text-2xl font-medium">All Products</p>
+          <div className="w-full h-0.5 bg-orange-600 rounded-full"></div>
         </div>
         {/* 5. Products Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 flex-col items-center gap-6 mt-12 pb-14 w-full">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 flex-col items-center gap-6 mt-9 pb-6 w-full">
           {products.map((product, index) => (
             <ProductCard key={index} product={product} />
           ))}
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 flex-col items-center gap-6 mt-12 pb-14 w-full">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 flex-col items-center gap-6 pb-14 w-full">
           {products.map((product, index) => (
             <ProductCard key={index} product={product} />
           ))}

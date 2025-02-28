@@ -1,4 +1,5 @@
-"use client";
+// Imports
+"use client"; // This tells Next.js that this component should be rendered on the client-side.
 import React, { useEffect, useState } from "react";
 import { assets } from "@/assets/assets";
 import Image from "next/image";
@@ -10,10 +11,10 @@ import toast from "react-hot-toast";
 
 const ProductList = () => {
   const { router, getToken, user } = useAppContext();
-
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Fetching Seller's Products
   const fetchSellerProduct = async () => {
     try {
       const token = await getToken();
@@ -31,20 +32,25 @@ const ProductList = () => {
     }
   };
 
+  // Fetch Data When User is Available
   useEffect(() => {
     if (user) {
       fetchSellerProduct();
     }
   }, [user]);
 
+  // Rendering the UI: If loading is true, it shows a Loading component. Otherwise, it displays the product table.
   return (
     <div className="flex-1 min-h-screen flex flex-col justify-between">
       {loading ? (
         <Loading />
       ) : (
         <div className="w-full md:p-10 p-4">
-          <h2 className="pb-4 text-lg font-medium">All Products</h2>
-          <div className="flex flex-col items-center max-w-4xl w-full overflow-hidden rounded-md bg-white border border-gray-500/20">
+          <h2 className="text-2xl mb-8 bg-sky-800 border-2 text-white border-gray-700 max-w-40 mx-auto rounded text-center font-medium">
+            All Products
+          </h2>
+
+          <div className="flex flex-col ml-8 items-center max-w-5xl w-full overflow-hidden rounded-md bg-white border-2 border-gray-600/20">
             <table className=" table-fixed w-full overflow-hidden">
               <thead className="text-gray-900 text-sm text-left">
                 <tr>
@@ -60,6 +66,7 @@ const ProductList = () => {
                   </th>
                 </tr>
               </thead>
+
               <tbody className="text-sm text-gray-500">
                 {products.map((product, index) => (
                   <tr key={index} className="border-t border-gray-500/20">
@@ -75,10 +82,13 @@ const ProductList = () => {
                       </div>
                       <span className="truncate w-full">{product.name}</span>
                     </td>
+
                     <td className="px-4 py-3 max-sm:hidden">
                       {product.category}
                     </td>
+
                     <td className="px-4 py-3">${product.offerPrice}</td>
+
                     <td className="px-4 py-3 max-sm:hidden">
                       <button
                         onClick={() => router.push(`/product/${product._id}`)}
