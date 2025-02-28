@@ -1,8 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { assets } from "@/assets/assets";
-import Image from "next/image";
+// The HeaderSlider component is responsible for displaying a dynamic image slider on the homepage. It automatically transitions between promotional slides every 4 seconds while allowing manual navigation using small indicator dots.
+
+// 1️. Importing Dependencies
+import React, { useState, useEffect } from "react"; // handles the current slide and set up the automatic slider transition.
+import { assets } from "@/assets/assets"; // assets → Imported from @/assets/assets, containing image assets for the slider.
+import Image from "next/image"; // Image (from Next.js) → Optimized image rendering.
 
 const HeaderSlider = () => {
+  // 2. Defining sliderData (Slider Content)
   const sliderData = [
     {
       id: 1,
@@ -38,20 +42,24 @@ const HeaderSlider = () => {
     },
   ];
 
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(0); // 3. Managing Current Slide State
 
+  // 4. Auto-Slide Effect
   useEffect(() => {
+    // Automatically changes the slide every 4 seconds.
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % sliderData.length);
     }, 4000);
-    return () => clearInterval(interval);
+    return () => clearInterval(interval); // Cleans up the interval on unmount to avoid memory leaks.
   }, [sliderData.length]);
 
+  // 5. Manual Slide Change Function (using small indicator dots.), Allows users to click on dots to switch slides manually.
   const handleSlideChange = (index) => {
     setCurrentSlide(index);
   };
 
   return (
+    // 6. Slider Layout
     <div className="overflow-hidden relative w-full">
       <div
         className="flex transition-transform duration-700 ease-in-out"
@@ -59,11 +67,13 @@ const HeaderSlider = () => {
           transform: `translateX(-${currentSlide * 100}%)`,
         }}
       >
+        {/* 7. Mapping Through sliderData */}
         {sliderData.map((slide, index) => (
           <div
             key={slide.id}
             className="flex flex-col-reverse md:flex-row items-center justify-between bg-[#E6E9F2] py-8 md:px-14 px-5 mt-6 rounded-xl min-w-full"
           >
+            {/* 8. Displaying Slide Content */}
             <div className="md:pl-8 mt-10 md:mt-0">
               <p className="md:text-base text-orange-600 pb-1">{slide.offer}</p>
               <h1 className="max-w-lg md:text-[40px] md:leading-[48px] text-2xl font-semibold">
@@ -83,6 +93,8 @@ const HeaderSlider = () => {
                 </button>
               </div>
             </div>
+
+            {/* 9. Displaying Slide Image */}
             <div className="flex items-center flex-1 justify-center">
               <Image
                 className="md:w-72 w-48"
@@ -94,6 +106,7 @@ const HeaderSlider = () => {
         ))}
       </div>
 
+      {/* 10. Slider Navigation Dots */}
       <div className="flex items-center justify-center gap-2 mt-8">
         {sliderData.map((_, index) => (
           <div

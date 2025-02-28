@@ -1,3 +1,4 @@
+// 1. Imports
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import NewsLetter from "@/components/NewsLetter";
@@ -10,9 +11,11 @@ const page = () => {
   return (
     <div>
       <div>
+        {/* Navbar component */}
         <Navbar />
         <div>
           <div className="mx-10 my-10 flex flex-col md:flex-row gap-16">
+            {/* Image on the left */}
             <Image
               className="w-full md:max-w-[450px] cursor-pointer"
               src={assets.about_img}
@@ -20,7 +23,9 @@ const page = () => {
               width="450"
             />
 
+            {/* About Us section details on the right */}
             <div className="flex flex-col justify-center gap-6 md:w-2/4 text-justify text-gray-600">
+              {/* Title */}
               <div className="text-2xl">
                 <Title text1={"ABOUT"} text2={"US"} />
               </div>
@@ -46,6 +51,7 @@ const page = () => {
             </div>
           </div>
 
+          {/* Why Choose Us Title */}
           <div className="text-4xl mx-10 py-4">
             <Title text1={"WHY"} text2={"CHOOSE US"} />
           </div>
@@ -62,7 +68,7 @@ const page = () => {
             </div>
 
             <div className="border border-gray-300 px-10 md:px-16 py-8 sm:py-20 flex flex-col gap-5">
-              <b>Convernience:</b>
+              <b>Convenience:</b>
               <p className="text-gray-400 text-justify">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel
                 cumque commodi, veniam suscipit sed mollitia deserunt, explicabo
@@ -82,8 +88,11 @@ const page = () => {
             </div>
           </div>
 
+          {/* NewsLetter Component */}
           <NewsLetter />
         </div>
+
+        {/* Footer Component */}
         <Footer />
       </div>
     </div>

@@ -1,3 +1,4 @@
+// Imports
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import NewsLetter from "@/components/NewsLetter";
@@ -10,8 +11,10 @@ const page = () => {
   return (
     <div>
       <div>
+        {/* Navbar Component */}
         <Navbar />
         <div>
+          {/* Contact Us Title */}
           <div className="text-center text-2xl pt-10">
             <Title text1={"CONTACT"} text2={"US"} />
           </div>
@@ -23,6 +26,7 @@ const page = () => {
               alt=""
             />
 
+            {/* Contact Details */}
             <div className="flex flex-col justify-center items-start gap-6 mx-10">
               <p className="font-semibold text-xl text-gray-600">Our Store</p>
 
@@ -45,14 +49,16 @@ const page = () => {
                 Learn more about our teams and job opening.
               </p>
 
-              <button className="border border-black px-8 py-4 text-sm hover:bg-black hover:text-white transition-all duration-400">
+              <button className="border rounded border-black px-8 py-4 text-sm hover:bg-black hover:text-white transition-all duration-400">
                 Explore Jobs
               </button>
             </div>
           </div>
 
+          {/* NewsLetter Component */}
           <NewsLetter />
         </div>
+        {/* Footer Component */}
         <Footer />
       </div>
     </div>

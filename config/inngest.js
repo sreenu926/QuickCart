@@ -1,12 +1,16 @@
+// This Inngest configuration file is responsible for handling event-driven tasks in QuickCart Next.js application. It listens for events (such as user creation, updates, deletion, and order placement) and executes the appropriate database operations asynchronously.
+
+// 1. Import dependencies.
 import { Inngest } from "inngest";
 import connectDB from "./db";
 import User from "@/models/User";
 import Order from "@/models/Order";
 
-// Create a client to send and receive events
+// 2. Create a client to send and receive events
 export const inngest = new Inngest({ id: "quickcart-next" });
 
-// Inngest Function to save user data to a database
+// 3. Inngest Function to save user data to a database (Clerk → MongoDB)
+/* Listens for the clerk/user.created event. Extracts user data from the event. Stores the user in MongoDB using the User model. When a user signs up via Clerk, this function automatically adds them to the database. */
 export const syncUserCreation = inngest.createFunction(
   {
     id: "sync-user-from-clerk",
@@ -26,13 +30,13 @@ export const syncUserCreation = inngest.createFunction(
   }
 );
 
-// Inngest Function to update user data in database
+// 4. Inngest Function to update user data in database: Listens for the clerk/user.updated event Updates the user data in MongoDB. When a user updates their name, email, or profile picture in Clerk, the database reflects these changes.
 export const syncUserUpdation = inngest.createFunction(
   {
     id: "update-user-from-clerk",
   },
   {
-    event: "cleark/user.updated",
+    event: "clerk/user.updated",
   },
   async ({ event }) => {
     const { id, first_name, last_name, email_addresses, image_url } =
@@ -48,7 +52,7 @@ export const syncUserUpdation = inngest.createFunction(
   }
 );
 
-// Inngest Function to delete  user from database
+// 5. Inngest Function to delete  user from database: Listens for the clerk/user.deleted event. Deletes the user from MongoDB when they are deleted from Clerk. If an admin removes a user, their data is automatically removed from the database.
 export const syncUserDeletion = inngest.createFunction(
   {
     id: "delete-user-with-clerk",
@@ -61,7 +65,8 @@ export const syncUserDeletion = inngest.createFunction(
   }
 );
 
-// Inngest Function to create user's order in database
+// 6. Inngest Function to create user's order in database: Listens for the order/created event. Processes orders in batches (up to 5 orders at a time, with a 5-second timeout). Saves multiple orders in MongoDB using insertMany(). When a user places an order, this function stores the order details in the database asynchronously.
+
 export const createUserOrder = inngest.createFunction(
   {
     id: "create-user-order",

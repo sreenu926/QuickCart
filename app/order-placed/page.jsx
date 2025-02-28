@@ -1,3 +1,4 @@
+//
 "use client";
 import { assets } from "@/assets/assets";
 import { useAppContext } from "@/context/AppContext";
@@ -10,7 +11,7 @@ const OrderPlaced = () => {
   useEffect(() => {
     setTimeout(() => {
       router.push("/my-orders");
-    }, 4000);
+    }, 3000);
   }, []);
 
   return (

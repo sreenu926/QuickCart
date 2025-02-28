@@ -1,26 +1,42 @@
-'use client'
+// This Cart Page (Cart.js) is a client-side React component in a Next.js application that displays the user's shopping cart. It provides an interface to view cart items, update quantities, remove items, and proceed with the order.
+
+"use client"; // Ensures that this component runs on the client-side in a Next.js app.
 import React from "react";
 import { assets } from "@/assets/assets";
 import OrderSummary from "@/components/OrderSummary";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import { useAppContext } from "@/context/AppContext";
+import Footer from "@/components/Footer";
 
 const Cart = () => {
+  // 2. Accessing Global State (Context API)
+  const {
+    products,
+    router,
+    cartItems,
+    addToCart,
+    updateCartQuantity,
+    getCartCount,
+  } = useAppContext();
 
-  const { products, router, cartItems, addToCart, updateCartQuantity, getCartCount } = useAppContext();
-
+  // 3. UI Structure
   return (
     <>
-      <Navbar />
+      <Navbar /> {/* Includes a navigation bar (Navbar) at the top. */}
       <div className="flex flex-col md:flex-row gap-10 px-6 md:px-16 lg:px-32 pt-14 mb-20">
         <div className="flex-1">
+          {/* 4. Cart Title & Item Count */}
           <div className="flex items-center justify-between mb-8 border-b border-gray-500/30 pb-6">
             <p className="text-2xl md:text-3xl text-gray-500">
               Your <span className="font-medium text-orange-600">Cart</span>
             </p>
-            <p className="text-lg md:text-xl text-gray-500/80">{getCartCount()} Items</p>
+            <p className="text-lg md:text-xl text-gray-500/80">
+              {getCartCount()} Items
+            </p>
           </div>
+
+          {/* 5. Cart Table (Product Details, Price, Quantity, Subtotal) */}
           <div className="overflow-x-auto">
             <table className="min-w-full table-auto">
               <thead className="text-left">
@@ -39,9 +55,13 @@ const Cart = () => {
                   </th>
                 </tr>
               </thead>
+
+              {/* 6. Displaying Cart Items */}
               <tbody>
                 {Object.keys(cartItems).map((itemId) => {
-                  const product = products.find(product => product._id === itemId);
+                  const product = products.find(
+                    (product) => product._id === itemId
+                  );
 
                   if (!product || cartItems[itemId] <= 0) return null;
 
@@ -49,6 +69,8 @@ const Cart = () => {
                     <tr key={itemId}>
                       <td className="flex items-center gap-4 py-4 md:px-4 px-1">
                         <div>
+                          {/* 7. Product Image & Name */}
+                          {/* Provides a "Remove" button (visible on desktop and mobile separately). */}
                           <div className="rounded-lg overflow-hidden bg-gray-500/10 p-2">
                             <Image
                               src={product.image[0]}
@@ -75,17 +97,40 @@ const Cart = () => {
                           </button>
                         </div>
                       </td>
-                      <td className="py-4 md:px-4 px-1 text-gray-600">${product.offerPrice}</td>
+
+                      {/* 8. Price */}
+                      <td className="py-4 md:px-4 px-1 text-gray-600">
+                        ${product.offerPrice}
+                      </td>
+
+                      {/* 8. Quantity Selector */}
                       <td className="py-4 md:px-4 px-1">
                         <div className="flex items-center md:gap-2 gap-1">
-                          <button onClick={() => updateCartQuantity(product._id, cartItems[itemId] - 1)}>
+                          <button
+                            onClick={() =>
+                              updateCartQuantity(
+                                product._id,
+                                cartItems[itemId] - 1
+                              )
+                            }
+                          >
                             <Image
                               src={assets.decrease_arrow}
                               alt="decrease_arrow"
                               className="w-4 h-4"
                             />
                           </button>
-                          <input onChange={e => updateCartQuantity(product._id, Number(e.target.value))} type="number" value={cartItems[itemId]} className="w-8 border text-center appearance-none"></input>
+                          <input
+                            onChange={(e) =>
+                              updateCartQuantity(
+                                product._id,
+                                Number(e.target.value)
+                              )
+                            }
+                            type="number"
+                            value={cartItems[itemId]}
+                            className="w-8 border text-center appearance-none"
+                          ></input>
                           <button onClick={() => addToCart(product._id)}>
                             <Image
                               src={assets.increase_arrow}
@@ -95,14 +140,23 @@ const Cart = () => {
                           </button>
                         </div>
                       </td>
-                      <td className="py-4 md:px-4 px-1 text-gray-600">${(product.offerPrice * cartItems[itemId]).toFixed(2)}</td>
+
+                      {/* 8. Subtotal */}
+                      <td className="py-4 md:px-4 px-1 text-gray-600">
+                        ${(product.offerPrice * cartItems[itemId]).toFixed(2)}
+                      </td>
                     </tr>
                   );
                 })}
               </tbody>
             </table>
           </div>
-          <button onClick={()=> router.push('/all-products')} className="group flex items-center mt-6 gap-2 text-orange-600">
+
+          {/* 9. "Continue Shopping" Button */}
+          <button
+            onClick={() => router.push("/all-products")}
+            className="group flex items-center mt-6 gap-2 text-orange-600"
+          >
             <Image
               className="group-hover:-translate-x-1 transition"
               src={assets.arrow_right_icon_colored}
@@ -111,8 +165,10 @@ const Cart = () => {
             Continue Shopping
           </button>
         </div>
+        {/* 10. Order Summary & Footer components */}
         <OrderSummary />
       </div>
+      <Footer />
     </>
   );
 };
